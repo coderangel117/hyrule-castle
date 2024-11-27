@@ -10,6 +10,7 @@ class Player(Character):
         hp = self.max_health / 2
         if self.health + hp > self.max_health:
             self.health = self.max_health
+            int(self.health)
         else:
             self.health += hp
-        print(f"{self.name} heals for {heal_point} health!")
+            int(self.health)
