@@ -27,7 +27,6 @@ class Character:
             self.die()
         else:
             print(f"{self.name} takes {damage} damage!")
-            self.health_check()
 
     def reload_health(self):
         self.health = self.max_health
