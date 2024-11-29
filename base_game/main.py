@@ -1,9 +1,7 @@
 import os
 
-from classes.Boss import Boss
+from base_game.classes.character_manager import CharacterManager
 from classes.Castle import Castle
-from classes.Enemy import Enemy
-from classes.Player import Player
 
 
 def choice_action(player):
@@ -20,24 +18,22 @@ def display_ascii_art(file, reduced=False, scale=0.5):
         print(f.read())
 
 
-def define_character():
-    player = Player("Link", 60, 60, 15)
-    enemy = Enemy("Bokoblin", 30, 30, 5)
-    boss = Boss("Ganon", 150, 150, 20)
-    return player, enemy, boss
-
-
 def main():
     hyrule = Castle(10)
     boss_level = hyrule.nb_level
-    # display_ascii_art("Title.txt")
-    player = define_character()[0]
+    manager = CharacterManager()
+    manager.initialize_characters()
+    player = manager.player
+    print(f"Player: {manager.player.name}")
+    print(f"Enemy: {manager.enemy.name}")
+    print(f"Boss: {manager.boss.name}")
     for i in range(1, boss_level + 1):
-        enemy = Enemy("Bokoblin", 30, 30, 5)
+        enemy = manager.enemy
         if i == boss_level:
-            enemy = Boss("Ganon", 150, 150, 20)
+            enemy = manager.boss
             print("You have reached the boss level!")
         print(f"========== FIGHT {i} ==========")
+        print(enemy.health)
         while enemy.health > 0 and player.health > 0:
             enemy_hp = "I" * int(enemy.health)
             player_hp = "I" * int(player.health)
@@ -55,12 +51,12 @@ def main():
                 if i < boss_level:
                     print(f"{enemy.name} died!")
                     i += 1
-                    input('Press any key to continue...')
                     break
                 if i == boss_level:
                     print("You defeated the boss!")
                     os.system("mpg123 /srv/http/hyrule-castle/base_game/victory_8bit.mp3 > /dev/null 2>&1")
                     display_ascii_art("victory.txt")
+                    display_ascii_art("Link.txt")
                     return
             enemy.attack(player)
             if player.health <= 0:
