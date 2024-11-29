@@ -1,10 +1,29 @@
 import os
+import sys
+import time
 
-from base_game.classes.character_manager import CharacterManager
 from classes.Castle import Castle
+from classes.character_manager import CharacterManager
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def clear_screen():
+    """Efface l'écran."""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def typewriter_effect(text):
+    """ Write text with a typewriter effect."""
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(0.07)  # Pause entre chaque lettre
+    print()
 
 
 def choice_action(player):
+    """Define the action to take."""
     choice = 0
     while choice not in ["1", "2"]:
         print("---OPTIONS-----\n"
@@ -13,12 +32,16 @@ def choice_action(player):
     return int(choice)
 
 
-def display_ascii_art(file, reduced=False, scale=0.5):
-    with open(file, "r") as f:
+def display_ascii_art(file):
+    """Display ASCII art from a file."""
+    abs_path = os.path.join(BASE_DIR, file)
+    with open(abs_path, "r") as f:
         print(f.read())
 
 
 def main():
+    """Main function."""
+    typewriter_effect("Welcome to Hyrule Castle!")
     hyrule = Castle(10)
     boss_level = hyrule.nb_level
     manager = CharacterManager()
@@ -28,9 +51,11 @@ def main():
     print(f"Enemy: {manager.enemy.name}")
     print(f"Boss: {manager.boss.name}")
     for i in range(1, boss_level + 1):
+        manager.enemy.health = manager.enemy.max_health
         enemy = manager.enemy
         if i == boss_level:
             enemy = manager.boss
+            manager.boss.health = manager.boss.health
             print("You have reached the boss level!")
         print(f"========== FIGHT {i} ==========")
         print(enemy.health)
@@ -54,13 +79,18 @@ def main():
                     break
                 if i == boss_level:
                     print("You defeated the boss!")
-                    os.system("mpg123 /srv/http/hyrule-castle/base_game/victory_8bit.mp3 > /dev/null 2>&1")
-                    display_ascii_art("victory.txt")
-                    display_ascii_art("Link.txt")
+                    import subprocess
+                    # Lancer la musique en arrière-plan
+                    subprocess.Popen(
+                        ["mpg123", "/srv/http/hyrule-castle/base_game/victory_8bit.mp3"],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL
+                    )
+                    display_ascii_art("base_game/Link.txt")
                     return
             enemy.attack(player)
             if player.health <= 0:
-                display_ascii_art("game_over.txt")
+                display_ascii_art("base_game/game_over.txt")
                 return
 
 
