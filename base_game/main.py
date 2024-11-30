@@ -11,8 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def options_menu():
     """Display the options menu."""
     clear_screen()
-    print("1. Sound\n"
-          "2. Back\n")
+    print("1. Mods\n" "2. Back\n")
     choice = input()
     while choice not in ["1", "2"]:
         print("Invalid choice. Please enter 1 or 2.")
@@ -26,9 +25,7 @@ def main_menu():
     clear_screen()
     display_ascii_art("base_game/Title.txt")
     typewriter_effect("Welcome to Hyrule Castle!")
-    print("1. Start\n"
-          "2. Options\n"
-          "3. Quit\n")
+    print("1. Start\n" "2. Options\n" "3. Quit\n")
     choice = input()
     while choice not in ["1", "2", "3"]:
         print("Invalid choice. Please enter 1 or 2 or 3.")
@@ -41,11 +38,11 @@ def main_menu():
 
 def clear_screen():
     """Efface l'écran."""
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system("cls" if os.name == "nt" else "clear")
 
 
 def typewriter_effect(text):
-    """ Write text with a typewriter effect."""
+    """Write text with a typewriter effect."""
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
@@ -53,12 +50,11 @@ def typewriter_effect(text):
     print()
 
 
-def choice_action(player):
+def choice_action():
     """Define the action to take."""
     choice = 0
     while choice not in ["1", "2"]:
-        print("---OPTIONS-----\n"
-              "1. Attack    2. Heal")
+        print("---OPTIONS-----\n" "1. Attack    2. Heal")
         choice = input()
     return int(choice)
 
@@ -66,6 +62,7 @@ def choice_action(player):
 def display_ascii_art(file):
     """Display ASCII art from a file."""
     abs_path = os.path.join(BASE_DIR, file)
+
     with open(abs_path, "r") as f:
         print(f.read())
 
@@ -78,6 +75,7 @@ def main():
     manager = CharacterManager()
     manager.initialize_characters()
     player = manager.player
+    print("Your character is: " + player.name)
     print(f"Player: {manager.player.name}")
     print(f"Enemy: {manager.enemy.name}")
     print(f"Boss: {manager.boss.name}")
@@ -93,11 +91,14 @@ def main():
         while enemy.health > 0 and player.health > 0:
             enemy_hp = "I" * int(enemy.health)
             player_hp = "I" * int(player.health)
-            print(f"{enemy.name} \n "
-                  f"HP: {enemy_hp} {enemy.health}/{enemy.max_health}")
-            print(f"{player.name} \n"
-                  f"HP: {player_hp} {player.health}/{player.max_health}")
-            choice = choice_action(player)
+            print(
+                f"{enemy.name} \n " f"HP: {enemy_hp} {enemy.health}/{enemy.max_health}"
+            )
+            print(
+                f"{player.name} \n"
+                f"HP: {player_hp} {player.health}/{player.max_health}"
+            )
+            choice = choice_action()
             if choice == 1:
                 player.attack(enemy)
             else:
@@ -111,11 +112,15 @@ def main():
                 if i == boss_level:
                     print("You defeated the boss!")
                     import subprocess
+
                     # Lancer la musique en arrière-plan
                     subprocess.Popen(
-                        ["mpg123", "/srv/http/hyrule-castle/base_game/victory_8bit.mp3"],
+                        [
+                            "mpg123",
+                            "/srv/http/hyrule-castle/base_game/victory_8bit.mp3",
+                        ],
                         stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL
+                        stderr=subprocess.DEVNULL,
                     )
                     display_ascii_art("base_game/Link.txt")
                     return
