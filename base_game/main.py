@@ -8,6 +8,37 @@ from classes.character_manager import CharacterManager
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+def options_menu():
+    """Display the options menu."""
+    clear_screen()
+    print("1. Sound\n"
+          "2. Back\n")
+    choice = input()
+    while choice not in ["1", "2"]:
+        print("Invalid choice. Please enter 1 or 2.")
+        choice = input()
+    if choice == "2":
+        main_menu()
+
+
+def main_menu():
+    """Display the main menu."""
+    clear_screen()
+    display_ascii_art("base_game/Title.txt")
+    typewriter_effect("Welcome to Hyrule Castle!")
+    print("1. Start\n"
+          "2. Options\n"
+          "3. Quit\n")
+    choice = input()
+    while choice not in ["1", "2", "3"]:
+        print("Invalid choice. Please enter 1 or 2 or 3.")
+        choice = input()
+    if choice == "2":
+        options_menu()
+    if choice == "3":
+        sys.exit(0)
+
+
 def clear_screen():
     """Efface l'écran."""
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -41,7 +72,7 @@ def display_ascii_art(file):
 
 def main():
     """Main function."""
-    typewriter_effect("Welcome to Hyrule Castle!")
+    main_menu()
     hyrule = Castle(10)
     boss_level = hyrule.nb_level
     manager = CharacterManager()
@@ -94,5 +125,16 @@ def main():
                 return
 
 
+def handle_exit():
+    print("\nSaving your progress...")
+    # @TODO: Ajouter une logique de sauvegarde
+    time.sleep(2)
+    print("Progress saved.")
+    print("Goodbye, adventurer!")
+
+
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        handle_exit()
