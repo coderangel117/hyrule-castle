@@ -5,10 +5,12 @@ from classes.Castle import Castle
 from classes.character_manager import CharacterManager
 from utils import clear_screen, display_ascii_art, typewriter_effect
 
+
+# TODO: Gestion des utilisateurs, reprendre le module du projet multigame(python_game)
 is_paused = False
 
 
-def pause_menu(stdscr):
+def pause_menu(manager, stdscr):
     """Affiche le menu pause."""
     stdscr.clear()
     stdscr.addstr("=== Menu Pause ===\n")
@@ -30,7 +32,6 @@ def pause_menu(stdscr):
             return "resume"
 
 
-# TODO: Gestion des utilisateurs, reprendre le module du projet multigame(python_game)
 def options_menu(manager, stdscr):
     """Display the options menu."""
     stdscr.clear()
@@ -144,24 +145,24 @@ def game_loop(manager, stdscr):
             # Vider le buffer d'entrée
             curses.flushinp()
 
-            try:
-                choice = int(stdscr.getkey())  # Lire une touche et convertir en entier
-            except ValueError:
-                stdscr.addstr(7, 0, "Invalid input! Press 1 or 2.\n")
-                stdscr.refresh()
-                curses.napms(500)
-                continue
+            key = stdscr.getkey()
+            # Vérifier si la touche Échap a été pressée
+            if key == "\x1b":  # '\x1b' est le code pour Échap
+                pause_menu(manager, stdscr)
+                stdscr.clear()
+                break  # Reprendre là où on s'était arrêté
+
             stdscr.addstr(6, 0, " " * 30)  # Effacer le message "Waiting for input"
             stdscr.move(6, 0)
             # Actions du joueur
-            if choice == 1:
+            if key == "1":
                 player.attack(enemy)
                 stdscr.addstr(
                     8,
                     0,
                     f"{player.name} attacked {enemy.name} and dealt {player.strength} damage!\n",
                 )
-            elif choice == 2:
+            elif key == "2":
                 player.self_heal()
                 stdscr.addstr(8, 0, f"{player.name} used heal and regained health!\n")
                 stdscr.refresh()
