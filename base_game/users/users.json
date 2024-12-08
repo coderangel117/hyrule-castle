@@ -1,0 +1,16 @@
+[
+  {
+    "username": "gaby",
+    "played_games": 60,
+    "nbfail": 11,
+    "nbwin": 49,
+    "greatest_score": []
+  },
+  {
+    "username": "didi",
+    "played_games": 3,
+    "nbfail": 1,
+    "nbwin": 2,
+    "greatest_score": []
+  }
+]
