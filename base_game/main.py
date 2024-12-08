@@ -31,39 +31,48 @@ def pause_menu(stdscr):
 
 
 # TODO: Gestion des utilisateurs, reprendre le module du projet multigame(python_game)
-def options_menu(manager, stdcr):
+def options_menu(manager, stdscr):
     """Display the options menu."""
-    print("1. Dificulty level\n2. Return to main menu")
-    choice = input()
-
-    while choice not in ["1", "2"]:
-        print("Invalid choice. Please enter 1 or 2.")
-        choice = input()
-    if choice == "1":
-        print("Choose difficulty level: ")
-        print("1. Easy")
-        print("2. Normal")
-        print("3. Hard")
-        print("4. Legendary")
-        choice = input()
-        tab = ["easy", "normal", "hard", "legendary"]
-        choice = tab[int(choice) - 1]
-        while choice not in ["1", "2", "3", "4"]:
-            print("Invalid choice. Please enter 1 or 2 or 3 or 4.")
-            choice = input()
-    if choice == "2":
-        main_menu(manager)
+    stdscr.clear()
+    stdscr.addstr("1. Difficulty level\n2. Return to main menu\n")
+    stdscr.refresh()
+    # Attendre une réponse valide
+    while True:
+        choice = stdscr.getkey()
+        if choice == "1":
+            stdscr.clear()
+            stdscr.addstr("Choose difficulty level: \n")
+            stdscr.addstr("1. Easy\n2. Normal\n3. Hard\n4. Legendary\n")
+            stdscr.refresh()
+            choice = stdscr.getkey()
+            tab = ["easy", "normal", "hard", "legendary"]
+            if choice in ["1", "2", "3", "4"]:
+                choice = tab[int(choice) - 1]
+                stdscr.addstr("You now playing on {} level".format(choice))
+                stdscr.refresh()
+                curses.napms(1000)
+                stdscr.clear()
+                main_menu(stdscr)
+                break
+            else:
+                stdscr.addstr("Invalid choice. Please enter 1, 2, 3 or 4.\n")
+                stdscr.refresh()
+        elif choice == "2":
+            stdscr.clear()
+            main_menu(stdscr)
+            break
+        else:
+            stdscr.addstr("Invalid choice. Please enter 1 or 2.\n")
+            stdscr.refresh()
 
 
 def main_menu(stdscr):
     """Display the main menu."""
     manager = CharacterManager()
-    # display_ascii_art("base_game/Title.txt")
-    # typewriter_effect("Welcome to Hyrule Castle!")
-    stdscr.clear()
     stdscr.addstr("=== Menu Principal ===\n")
     stdscr.addstr("1. Lancer le jeu\n")
-    stdscr.addstr("2. Quitter\n")
+    stdscr.addstr("2. Options\n")
+    stdscr.addstr("3. Quitter\n")
     stdscr.refresh()
 
     while True:
@@ -99,10 +108,12 @@ def game_loop(manager, stdscr):
     stdscr.addstr(0, 0, f"Your character is: {player.name}")
     stdscr.refresh()
     curses.napms(1000)  # Pause de 1 seconde pour que l'utilisateur voie le message
+
     for i in range(1, boss_level + 1):
         stdscr.clear()
         manager.enemy.health = manager.enemy.max_health
         enemy = manager.enemy
+
         if i == boss_level:
             enemy = manager.boss
             manager.boss.health = manager.boss.health
@@ -113,7 +124,7 @@ def game_loop(manager, stdscr):
         while enemy.health > 0 and player.health > 0:
             # Nettoyer les lignes pour éviter les résidus de texte
             clear_screen(stdscr)
-            # Afficher les HP de l'ennemi
+            # Afficher les PV du joueur et de l'ennemi
             enemy_hp = "I" * int(enemy.health)
             player_hp = "I" * int(player.health)
             stdscr.addstr(
@@ -126,41 +137,43 @@ def game_loop(manager, stdscr):
                 0,
                 f"{player.name} HP: {player_hp} ({player.health}/{player.max_health})\n",
             )
-            stdscr.addstr(5, 0, "Choose an action: [1] Attack | [2] Heal\n")
+            # Indiquer que c'est le tour du joueur
+            stdscr.addstr(5, 0, "Your turn! [1] Attack | [2] Heal")
+            stdscr.addstr(6, 0, "[>>> Waiting for input <<<]")  # Message dynamique
             stdscr.refresh()
+            # Vider le buffer d'entrée
             curses.flushinp()
+
             try:
                 choice = int(stdscr.getkey())  # Lire une touche et convertir en entier
             except ValueError:
-                stdscr.addstr(6, 0, "Invalid input! Press 1 or 2.\n")
+                stdscr.addstr(7, 0, "Invalid input! Press 1 or 2.\n")
                 stdscr.refresh()
                 curses.napms(500)
                 continue
+            stdscr.addstr(6, 0, " " * 30)  # Effacer le message "Waiting for input"
+            stdscr.move(6, 0)
+            # Actions du joueur
             if choice == 1:
                 player.attack(enemy)
-                stdscr.refresh()
                 stdscr.addstr(
                     8,
                     0,
-                    f"{player.name} attacked {enemy.name} and deals {player.strength} damages !\n",
+                    f"{player.name} attacked {enemy.name} and dealt {player.strength} damage!\n",
                 )
-                stdscr.refresh()
-                curses.napms(500)
             elif choice == 2:
                 player.self_heal()
-                stdscr.addstr(8, 0, f"{player.name} used heal!\n")
+                stdscr.addstr(8, 0, f"{player.name} used heal and regained health!\n")
                 stdscr.refresh()
-                curses.napms(500)
             else:
                 stdscr.addstr(8, 0, "Invalid action! Try again.\n")
                 stdscr.refresh()
                 curses.napms(500)
                 continue
+            stdscr.refresh()
+            curses.napms(500)
             if enemy.health <= 0:
                 if i < boss_level:
-                    stdscr.move(8, 0)
-                    stdscr.clrtoeol()
-                    stdscr.refresh()
                     stdscr.addstr(
                         9, 0, f"{enemy.name} died! Moving to the next level.\n"
                     )
@@ -180,17 +193,24 @@ def game_loop(manager, stdscr):
                     )
                     curses.napms(2000)
                     return
+            # L'ennemi attaque
+            #
+            stdscr.addstr(9, 0, f"{enemy.name} is attacking...\n")
             stdscr.refresh()
-            curses.napms(500)
+            curses.napms(300)
+            stdscr.clrtoeol()
             enemy.attack(player)
             stdscr.addstr(
                 9,
                 0,
-                f"{enemy.name} attacked {player.name} and deals {enemy.strength} damages !\n",
+                f"{enemy.name} attacked {player.name} and dealt {enemy.strength} damage!\n",
             )
             stdscr.refresh()
+            curses.napms(500)
+            clear_screen(stdscr)
+            curses.napms(500)
             if player.health <= 0:
-                stdscr.addstr(9, 0, "You have been defeated. Game over.\n")
+                stdscr.addstr(10, 0, "You have been defeated. Game over.\n")
                 stdscr.refresh()
                 curses.napms(2000)
                 return
@@ -201,7 +221,10 @@ def game_loop(manager, stdscr):
 
 def main():
     """Main function."""
-    # main_menu(manager)
+    typewriter_effect("Welcome to")
+    time.sleep(0.5)
+    display_ascii_art("base_game/Title.txt")
+    time.sleep(2)
     curses.wrapper(main_menu)
 
 

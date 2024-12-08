@@ -50,3 +50,7 @@ def clear_screen(stdscr):
     stdscr.clrtoeol()
     stdscr.move(7, 0)
     stdscr.clrtoeol()
+    stdscr.move(8, 0)
+    stdscr.clrtoeol()
+    stdscr.move(9, 0)
+    stdscr.clrtoeol()

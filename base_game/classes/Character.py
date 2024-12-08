@@ -14,5 +14,5 @@ class Character:
     def take_damage(self, damage):
         self.health -= damage
 
-    def relmad_health(self):
+    def reload_health(self):
         self.health = self.max_health
