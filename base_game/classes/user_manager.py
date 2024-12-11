@@ -1,10 +1,12 @@
 import glob
 import json
 import os
-import User
+import time
+
+from .User import User
 
 
-def get_all_users():
+def get_all_users(stdscr):
     """
     return all user in users.json
     :return:
@@ -15,7 +17,8 @@ def get_all_users():
         tab = json.load(users)
         if tab:
             for p in tab:
-                print(p["username"])
+                stdscr.addstr(f"{p["username"]}\n")
+                stdscr.refresh()
         else:
             new_user("invite")
     return users
@@ -28,7 +31,7 @@ def get_user_files():
     :return:array
     """
     users = []
-    for file in glob.glob("../users/*.json"):
+    for file in glob.glob("*.json"):
         users.append(file)
     if users.__contains__("users.json"):
         users.remove("users.json")  # Remove users.json from list
@@ -46,7 +49,7 @@ def new_user(username):
     :return: user:User
     """
     users = get_user_files()  # Get all username
-    if users.__contains__(username + ".json"):  # Check if username is free
+    if users.__contains__(username + ".json"):
         print(f"User {username} already exists. ")
     user = User(username)  # Create user
     user.username = username
@@ -55,7 +58,7 @@ def new_user(username):
     return user
 
 
-def get_user_info(username: str):
+def get_user_info(stdscr, username: str):
     """
     return user.tostring
     :param username:
@@ -69,36 +72,41 @@ def get_user_info(username: str):
             if data["played_games"] > 0:
                 if data["nbfail"] > 0 or data["nbwin"] > 0:
                     if (
-                        data["played_games"] == data["nbfail"] + data["nbwin"]
+                            data["played_games"] == data["nbfail"] + data["nbwin"]
                     ):  # Check if stats can be coherent
-                        print(
-                            f"User {data['username']} has {data['played_games']} played games "
-                            f"with {data['nbfail']} fails ({int((data['nbfail'] / data['played_games']) * 100)}%) "
-                            f"and {data['nbwin']} wons ({int((data['nbwin'] / data['played_games']) * 100)}%)"
+                        stdscr.addstr(
+                            f"User {data['username']} has {data['played_games']} played games\n"
+                            f"with {data['nbfail']} fails ({int((data['nbfail'] / data['played_games']) * 100)}%)\n"
+                            f"and {data['nbwin']} wons ({int((data['nbwin'] / data['played_games']) * 100)}%)\n"
                         )
+                        time.sleep(2)
                     else:
                         print("There are error in played games count....")
+                        time.sleep(2)
                 else:
                     print("There are error in win or fail count....")
+                    time.sleep(2)
             else:
                 print(f"User {data['username']} have never played")
+                time.sleep(2)
     else:
         print("User chosen doesn't exists")
+        time.sleep(2)
 
 
-def delete_user(username: str):
+def delete_user(stdscr, username: str):
     users = get_user_files()
     filename = username + ".json"
     if users.__contains__(filename):
         os.remove(filename)  # Remove the user's json file
-        get_all_users()  # Print all username
+        get_all_users(stdscr)  # Print all username
         print(f"User {username} has been successfully deleted")
     else:
         print("This user doesn't exist")
 
 
-def update_username(username, new_username):
-    get_all_users()
+def update_username(stdscr, username, new_username):
+    get_all_users(stdscr)
     if find_user(username):
         file_name = username + ".json"
         new_file_name = new_username + ".json"
@@ -115,7 +123,7 @@ def update_username(username, new_username):
                 f.truncate()  # remove remaining part
             merge_json_files(users)
             os.rename(file_name, new_file_name)
-            get_all_users()
+            get_all_users(stdscr)
             print(f" The username {username} has been changed to {new_username}")
     else:
         print("The username you have entered was not found")
@@ -166,7 +174,7 @@ def find_user(username: str):
     :param username:
     :return: boolean
     """
-    if get_user_files().__contains__(username + ".json"):
+    if get_user_files().__contains__(f"{username}.json"):
         return True
     else:
         return False
@@ -215,104 +223,82 @@ def merge_json_files(filename):
         json.dump(result, output_file, indent=2)
 
 
-def users_menu():
+def users_menu(stdscr):
     """
     Display users' manager menu and execute function with user's choice  or return to main menu
     :return: int
     """
     manage_choice = 0
-    while (
-        manage_choice != 1
-        and manage_choice != 2
-        and manage_choice != 3
-        and manage_choice != 4
-        and manage_choice != 5
-        and manage_choice != 6
-        and manage_choice != 7
-    ):
-        manage_choice = input("""
-        [1] - Display users list    
-        [2] - Search a specific user    
-        [3] - Create a new user
-        [4] - Update user username
-        [5] - Delete a user
-        [6] - Display user info
-        [7] - return to main menu
-        """)
-        if not utils.check_special_characters(manage_choice):
-            manage_choice = 0
-        manage_choice = int(manage_choice)
-    if manage_choice == 1:
-        get_all_users()
-    if manage_choice == 2:
-        username = input(
-            """
-            Type user's username you want to show
-            """
-        )
+    while manage_choice not in ["1", "2", "3", "4", "5", "6", "7"]:
+        stdscr.clear()
+        stdscr.refresh()
+        stdscr.addstr("User Manager\n"
+                      "[1] - Display users list\n"
+                      "[2] - Search a specific user\n"
+                      "[3] - Create a new user\n"
+                      "[4] - Update user username\n"
+                      "[5] - Delete a user\n"
+                      "[6] - Display user info\n"
+                      "[7] - return to main menu\n")
+        stdscr.refresh()
+        manage_choice = stdscr.getkey()
+        stdscr.refresh()
+    if manage_choice == "1":
+        stdscr.clear()
+        stdscr.refresh()
+        get_all_users(stdscr)
+    if manage_choice == "2":
+        print("Type user's username you want to show")
+        username = stdscr.getstr().decode("utf-8")
+        time.sleep(2)
+        stdscr.refresh()
         if find_user(username):
-            response = int(
-                input(
-                    f"This user exist in the list\n"
-                    f"Would you realize an action on this user ?\n"
-                    f"1 - Go user's stats\n"
-                    f"2 - Update this user\n"
-                    f"3 - Delete this user\n"
-                    f"4 - Return to the previous menu\n"
-                )
-            )
-            if response == 1:
-                get_user_info(username)
-            if response == 2:
-                new_username = input(
-                    """
-                    Type the new username 
-                    """
-                )
-                update_username(username, new_username)
-            if response == 3:
-                delete_user(username)
+            stdscr.addstr("This user exist in the list\n"
+                          "Would you realize an action on this user ?\n"
+                          "1 - Go user's stats\n"
+                          "2 - Update this user\n"
+                          "3 - Delete this user\n"
+                          "4 - Return to the previous menu\n")
+            response = stdscr.getkey()
+            print(response)
+            time.sleep(2)
+            if response == "1":
+                get_user_info(stdscr, username)
+            if response == "2":
+                new_username = input("Type the new username")
+                update_username(stdscr, username, new_username)
+            if response == "3":
+                delete_user(stdscr, username)
                 print("This user is deleted")
-            if response == 4:
-                users_menu()
+            if response == "4":
+                users_menu(stdscr)
         else:
             print("This user doesn't exist")
-    if manage_choice == 3:
-        get_all_users()
-        username = input(
-            """
-            Type new user's username you want
-            """
-        )
+            stdscr.clear()
+            stdscr.refresh()
+    if manage_choice == "3":
+        get_all_users(stdscr)
+        print("Type new user's username you want")
+        username = stdscr.getstr().decode("utf-8")
         new_user(username)
-    if manage_choice == 4:
-        get_all_users()
-        username = input(
-            """
-            Type user's username you want to change
-            """
-        )
-        new_username = input(
-            """
-            Type the new username 
-            """
-        )
-        update_username(username, new_username)
-    if manage_choice == 5:
-        get_all_users()
-        username = input(
-            """
-            Type user's username who want
-            """
-        )
-        delete_user(username)
-    if manage_choice == 6:
-        get_all_users()
-        username = input(
-            """
-            Type user's username you want
-            """
-        )
-        get_user_info(username)
-    if manage_choice == 7:
+    if manage_choice == "4":
+        get_all_users(stdscr)
+        print("Type user's username you want to change")
+        username = stdscr.getstr().decode("utf-8")
+        print("Type the new username ")
+        new_username = stdscr.getstr().decode("utf-8")
+        update_username(stdscr, username, new_username)
+    if manage_choice == "5":
+        get_all_users(stdscr)
+        print("Type user's username who want")
+        username = stdscr.getstr().decode("utf-8")
+        delete_user(stdscr, username)
+    if manage_choice == "6":
+        get_all_users(stdscr)
+        print("Type user's username you want")
+        username = stdscr.getstr().decode("utf-8")
+        print("User username is {}".format(username))
+        time.sleep(2)
+        get_user_info(stdscr, username)
+    if manage_choice == "7":
         return "main"

@@ -1,10 +1,11 @@
-import time
 import curses
 import subprocess
+import time
+
 from classes.Castle import Castle
 from classes.character_manager import CharacterManager
+from classes.user_manager import users_menu
 from utils import clear_screen, display_ascii_art, typewriter_effect
-
 
 # TODO: Gestion des utilisateurs, reprendre le module du projet multigame(python_game)
 is_paused = False
@@ -72,19 +73,24 @@ def main_menu(stdscr):
     manager = CharacterManager()
     stdscr.addstr("=== Menu Principal ===\n")
     stdscr.addstr("1. Lancer le jeu\n")
-    stdscr.addstr("2. Options\n")
-    stdscr.addstr("3. Quitter\n")
+    stdscr.addstr("2. Gestion des joueurs\n")
+    stdscr.addstr("3. Options\n")
+    stdscr.addstr("4. Quitter\n")
     stdscr.refresh()
-
     while True:
         key = stdscr.getkey()
+        print(key)
         if key == "1":
             game_loop(manager, stdscr)
             break
         elif key == "2":
-            options_menu(manager, stdscr)
+            users_menu(stdscr)
+            stdscr.clear()
+            main_menu(stdscr)
         elif key == "3":
-            break
+            options_menu(manager, stdscr)
+        elif key == "4":
+            return
 
 
 def choice_action():
