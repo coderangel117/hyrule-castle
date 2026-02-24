@@ -67,13 +67,6 @@ def main_menu(stdscr):
         pass
 
 
-def choice_action(stdscr):
-    """Define the action to take."""
-    title = "---Choisissez votre action---"
-    options = ["Attaquer", "Se soigner", "Fuir"]
-    _, choice = pick(options, title, screen=stdscr)
-    stdscr.refresh()
-    return choice
 
 
 def display_status(stdscr, enemy, player):
@@ -116,24 +109,25 @@ def game_loop(manager, stdscr):
         stdscr.refresh()
         while enemy.health > 0 and player.health > 0:
             clear_screen(stdscr)
-            enemy_hp = "❤️" * int(enemy.health)
-            player_hp = "❤️" * int(player.health)
-            stdscr.addstr(
-                2,
-                0,
-                f"{enemy.name} HP: {enemy_hp} ({enemy.health}/{enemy.max_health})\n",
-            )
-            stdscr.addstr(
-                3,
-                0,
-                f"{player.name} HP: {player_hp} ({player.health}/{player.max_health})\n",
-            )
+            display_status(stdscr, enemy, player)
+            # Indiquer que c'est le tour du joueur
+            stdscr.addstr(5, 0, "A vous de jouer ! [1] Attaquer | [2] Se soigner")
+            # stdscr.addstr(6, 0, "[>>> En attente<<<]")  # Message dynamique
             stdscr.refresh()
-            curses.napms(2000)
-            choice = choice_action(stdscr)
-            stdscr.refresh()
+            # Vider le buffer d'entrée
+            curses.flushinp()
+
+            try:
+                choice = int(stdscr.getkey())  # Lire une touche et convertir en entier
+            except ValueError:
+                # stdscr.addstr(7, 0, "Invalid input! Press 1 or 2.\n")
+                stdscr.refresh()
+                curses.napms(500)
+                continue
+            stdscr.addstr(6, 0, " " * 30)  # Effacer le message "Waiting for input"
+            stdscr.move(6, 0)
             # Actions du joueur
-            if choice == 0:
+            if choice == 1:
                 player.attack(enemy)
                 stdscr.addstr(
                     8,
