@@ -9,7 +9,7 @@ class Character:
         target.take_damage(self.strength)
 
     def health_check(self):
-        print("{} has {} health left".format(self.name, self.health))
+        print("{} a {} points de vie restants".format(self.name, self.health))
 
     def take_damage(self, damage):
         self.health -= damage

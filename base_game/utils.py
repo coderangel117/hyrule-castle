@@ -39,6 +39,12 @@ def typewriter_effect(text):
         time.sleep(0.1)  # Pause entre chaque lettre
     print()
 
+def handle_exit():
+    print("\nSaving your progress...")
+    # @TODO: Ajouter une logique de sauvegarde
+    print("Progress saved.")
+    print("Goodbye, adventurer!")
+
 
 def clear_screen(stdscr):
     """Clear the screen."""
