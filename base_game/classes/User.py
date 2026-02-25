@@ -11,7 +11,7 @@ class User:
         self.nbwin = nbwin
 
     def tostring(self):
-        return f" User {self.username} has {self.nbfail} fails et {self.nbwin} wons"
+        return f" Joueur {self.username} a {self.nbfail} défaites et {self.nbwin} victoires"
 
     def getusername(self):
         return self.username

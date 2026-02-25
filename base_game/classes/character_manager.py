@@ -5,25 +5,22 @@ import random
 from .Boss import Boss
 from .Enemy import Enemy
 from .Player import Player
+from ..menus.settings import GameSettings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class CharacterManager:
     """Manage character selection for player, enemies, and bosses."""
+    settings = GameSettings()
 
     def __init__(self, level="normal"):
         self.rarity_weights = [0, 50, 30, 15, 4, 1]
-        self.player = Player("", 0, 0, 0)
-        self.enemy = Enemy("", 0, 0, 0)
-        self.boss = Boss("", 0, 0, 0)
+        self.player = Player("", 0, 0, 0, 0)
+        self.enemy = Enemy("", 0, 0, 0, 0)
+        self.boss = Boss("", 0, 0, 0, 0)
         self.level = level
-        self.difficulty = {
-            "easy": 0.8,
-            "normal": 1.0,
-            "hard": 1.5,
-            "legendary": 2.0,
-        }
+        self.difficulty = self.settings.difficulty
 
     def get_level(self):
         """Get the level of the game."""
@@ -45,9 +42,10 @@ class CharacterManager:
             if character_class != Player:
                 character = character_class(
                     chosen["name"],
-                    chosen["hp"] * level,
-                    chosen["hp"] * level,
+                    chosen["hp"],
+                    chosen["hp"],
                     chosen["str"] * level,
+                    chosen["def"] * level
                 )
             else:
                 character = character_class(
@@ -55,6 +53,7 @@ class CharacterManager:
                     chosen["hp"],
                     chosen["hp"],
                     chosen["str"],
+                    chosen["def"]
                 )
             return character
 
@@ -69,9 +68,3 @@ class CharacterManager:
     def choose_boss(self):
         """Choose a random boss."""
         self.boss = self.load_character("data/bosses.json", Boss)
-
-    def initialize_characters(self):
-        """Initialize player, enemy, and boss at the start of the game."""
-        self.choose_player()
-        self.choose_enemy()
-        self.choose_boss()

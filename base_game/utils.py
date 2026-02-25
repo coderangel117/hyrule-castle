@@ -40,6 +40,8 @@ def typewriter_effect(text):
     print()
 
 
+
+
 def handle_exit():
     print("\nSaving your progress...")
     # @TODO: Ajouter une logique de sauvegarde
@@ -49,15 +51,6 @@ def handle_exit():
 
 def clear_screen(stdscr):
     """Clear the screen."""
-    stdscr.move(2, 0)
-    stdscr.clrtoeol()
-    stdscr.move(3, 0)
-    stdscr.clrtoeol()
-    stdscr.move(6, 0)
-    stdscr.clrtoeol()
-    stdscr.move(7, 0)
-    stdscr.clrtoeol()
-    stdscr.move(8, 0)
-    stdscr.clrtoeol()
-    stdscr.move(9, 0)
-    stdscr.clrtoeol()
+    for i in range(0, 15):
+        stdscr.move(i, 0)
+        stdscr.clrtoeol()
