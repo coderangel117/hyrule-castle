@@ -40,8 +40,6 @@ def typewriter_effect(text):
     print()
 
 
-
-
 def handle_exit():
     print("\nSaving your progress...")
     # @TODO: Ajouter une logique de sauvegarde

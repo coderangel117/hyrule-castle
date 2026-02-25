@@ -1,0 +1,116 @@
+{
+  "dungeons": [
+    {
+      "name": "Abandoned Tower",
+      "theme": "tutorial",
+      "boss": "Gleeoks",
+      "rooms": [
+        {"type": "start"},
+        {"type": "enemy"},
+        {"type": "chest"},
+        {"type": "enemy", "trap": true},
+        {"type": "merchant"},
+        {"type": "enemy", "count": 2},
+        {"type": "rest"},
+        {"type": "boss"}
+      ]
+    },
+    {
+      "name": "Forgotten Jungle Temple",
+      "theme": "tribal",
+      "boss": "Odolwa",
+      "rooms": [
+        {"type": "start"},
+        {"type": "enemy", "count": 1},
+        {"type": "chest"},
+        {"type": "trap"},
+        {"type": "enemy", "count": 2},
+        {"type": "chest"},
+        {"type": "enemy", "count": 3},
+        {"type": "merchant"},
+        {"type": "elite"},
+        {"type": "boss"}
+      ]
+    },
+    {
+      "name": "Catacombs of the Dead",
+      "theme": "undead",
+      "boss": "Stallord",
+      "rooms": [
+        {"type": "start"},
+        {"type": "enemy"},
+        {"type": "trap"},
+        {"type": "enemy", "chest": true},
+        {"type": "merchant"},
+        {"type": "enemy", "count": 2},
+        {"type": "puzzle"},
+        {"type": "enemy", "chest": true},
+        {"type": "boss"}
+      ]
+    },
+    {
+      "name": "Volcanic Mine",
+      "theme": "fire",
+      "boss": "Volvagia",
+      "rooms": [
+        {"type": "start"},
+        {"type": "enemy"},
+        {"type": "trap"},
+        {"type": "chest"},
+        {"type": "enemy", "count": 2},
+        {"type": "merchant"},
+        {"type": "elite"},
+        {"type": "rest"},
+        {"type": "boss"}
+      ]
+    },
+    {
+      "name": "Corrupted Forest",
+      "theme": "forest",
+      "boss": "Gohma",
+      "rooms": [
+        {"type": "start"},
+        {"type": "enemy"},
+        {"type": "enemy", "trap": true},
+        {"type": "puzzle"},
+        {"type": "chest"},
+        {"type": "enemy", "count": 3},
+        {"type": "merchant"},
+        {"type": "elite"},
+        {"type": "boss"}
+      ]
+    },
+    {
+      "name": "Dark Fortress",
+      "theme": "dark",
+      "boss": "Onox",
+      "rooms": [
+        {"type": "start"},
+        {"type": "enemy", "count": 2},
+        {"type": "merchant"},
+        {"type": "elite"},
+        {"type": "chest"},
+        {"type": "enemy", "count": 3},
+        {"type": "rest"},
+        {"type": "elite"},
+        {"type": "boss"}
+      ]
+    },
+    {
+      "name": "Hyrule Castle",
+      "theme": "final",
+      "boss": "Ganon",
+      "rooms": [
+        {"type": "start"},
+        {"type": "enemy", "count": 2},
+        {"type": "elite"},
+        {"type": "chest"},
+        {"type": "merchant"},
+        {"type": "enemy", "count": 3},
+        {"type": "elite"},
+        {"type": "rest"},
+        {"type": "boss"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "menu": "base_game/assets/music/menu.mp3",
+  "dungeon": "base_game/assets/music/dungeon.mp3",
+  "battle": "base_game/assets/music/battle.mp3",
+  "boss": "base_game/assets/music/boss.mp3",
+  "victory": "base_game/assets/music/victory.mp3",
+  "gameover": "base_game/assets/music/gameover.mp3"
+}

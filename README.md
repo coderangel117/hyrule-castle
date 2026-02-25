@@ -15,10 +15,10 @@ $ pip3 install -r requirements.txt
 
 ## Usage
 ```bash
-$ python3 hyrule_castle.py
+$ python -m base_game.main
 ```
 ## Next Features
-- [ ] Title screen
+- [x] Title screen
 - [ ] Options
 - [ ] Music
 - [ ] 4VS4 battle
