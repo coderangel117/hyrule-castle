@@ -1,5 +1,5 @@
-import re
 import os
+import re
 import sys
 import time
 
@@ -38,6 +38,7 @@ def typewriter_effect(text):
         sys.stdout.flush()
         time.sleep(0.1)  # Pause entre chaque lettre
     print()
+
 
 def handle_exit():
     print("\nSaving your progress...")

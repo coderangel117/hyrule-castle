@@ -1,6 +1,7 @@
 import glob
 import json
 import os
+
 import User
 
 
@@ -69,7 +70,7 @@ def get_user_info(username: str):
             if data["played_games"] > 0:
                 if data["nbfail"] > 0 or data["nbwin"] > 0:
                     if (
-                        data["played_games"] == data["nbfail"] + data["nbwin"]
+                            data["played_games"] == data["nbfail"] + data["nbwin"]
                     ):  # Check if stats can be coherent
                         print(
                             f"User {data['username']} has {data['played_games']} played games "
@@ -222,13 +223,13 @@ def users_menu():
     """
     manage_choice = 0
     while (
-        manage_choice != 1
-        and manage_choice != 2
-        and manage_choice != 3
-        and manage_choice != 4
-        and manage_choice != 5
-        and manage_choice != 6
-        and manage_choice != 7
+            manage_choice != 1
+            and manage_choice != 2
+            and manage_choice != 3
+            and manage_choice != 4
+            and manage_choice != 5
+            and manage_choice != 6
+            and manage_choice != 7
     ):
         manage_choice = input("""
         [1] - Display users list    
