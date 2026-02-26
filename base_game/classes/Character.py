@@ -5,7 +5,7 @@ class Character:
         self.max_health = hp
         self.strength = str_
         self.defense = def_
-        self.speed = spd
+        self.spd = spd
         self.luck = luck
 
     def attack(self, target):

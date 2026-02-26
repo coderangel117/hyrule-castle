@@ -3,8 +3,8 @@
     "id": 1,
     "name": "Link",
     "hp": 120,
-    "str": 20,
-    "def": 12,
+    "str_": 20,
+    "def_": 12,
     "spd": 11,
     "luck": 10
   },
@@ -12,8 +12,8 @@
     "id": 2,
     "name": "Young Link",
     "hp": 100,
-    "str": 16,
-    "def": 10,
+    "str_": 16,
+    "def_": 10,
     "spd": 12,
     "luck": 25
   },
@@ -21,8 +21,8 @@
     "id": 3,
     "name": "Sheik",
     "hp": 110,
-    "str": 18,
-    "def": 10,
+    "str_": 18,
+    "def_": 10,
     "spd": 12,
     "luck": 10
   },
@@ -30,8 +30,8 @@
     "id": 4,
     "name": "Impa",
     "hp": 130,
-    "str": 14,
-    "def": 12,
+    "str_": 14,
+    "def_": 12,
     "spd": 9,
     "luck": 10
   },
@@ -39,8 +39,8 @@
     "id": 5,
     "name": "Hylia",
     "hp": 150,
-    "str": 20,
-    "def": 8,
+    "str_": 20,
+    "def_": 8,
     "spd": 4,
     "luck": 10
   }

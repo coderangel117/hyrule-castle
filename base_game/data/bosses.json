@@ -3,8 +3,8 @@
     "id": 1,
     "name": "Ganon",
     "hp": 300,
-    "str": 18,
-    "def": 10,
+    "str_": 18,
+    "def_": 10,
     "spd": 5,
     "luck": 0
   },
@@ -12,8 +12,8 @@
     "id": 2,
     "name": "Gleeoks",
     "hp": 300,
-    "str": 20,
-    "def": 10,
+    "str_": 20,
+    "def_": 10,
     "spd": 6,
     "luck": 0
   },
@@ -21,8 +21,8 @@
     "id": 3,
     "name": "Volvagia",
     "hp": 350,
-    "str": 18,
-    "def": 10,
+    "str_": 18,
+    "def_": 10,
     "spd": 8,
     "luck": 0
   },
@@ -30,8 +30,8 @@
     "id": 4,
     "name": "Onox",
     "hp": 400,
-    "str": 20,
-    "def": 12,
+    "str_": 20,
+    "def_": 12,
     "spd": 6,
     "luck": 0
   },
@@ -39,8 +39,8 @@
     "id": 5,
     "name": "Odolwa",
     "hp": 350,
-    "str": 15,
-    "def": 10,
+    "str_": 15,
+    "def_": 10,
     "spd": 5,
     "luck": 0
   },
@@ -48,8 +48,8 @@
     "id": 6,
     "name": "Stallord",
     "hp": 300,
-    "str": 20,
-    "def": 8,
+    "str_": 20,
+    "def_": 8,
     "spd": 4,
     "luck": 0
   },
@@ -57,8 +57,8 @@
     "id": 7,
     "name": "Gohma",
     "hp": 250,
-    "str": 16,
-    "def": 10,
+    "str_": 16,
+    "def_": 10,
     "spd": 6,
     "luck": 0
   }
