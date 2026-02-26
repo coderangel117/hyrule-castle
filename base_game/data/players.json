@@ -3,75 +3,45 @@
     "id": 1,
     "name": "Link",
     "hp": 120,
-    "mp": 30,
     "str": 20,
-    "int": 7,
     "def": 12,
-    "res": 8,
     "spd": 11,
-    "luck": 10,
-    "race": 1,
-    "class": 1,
-    "rarity": 1
+    "luck": 10
   },
   {
     "id": 2,
     "name": "Young Link",
     "hp": 100,
-    "mp": 30,
     "str": 16,
-    "int": 6,
     "def": 10,
-    "res": 5,
     "spd": 12,
-    "luck": 25,
-    "race": 6,
-    "class": 1,
-    "rarity": 2
+    "luck": 25
   },
   {
     "id": 3,
     "name": "Sheik",
     "hp": 110,
-    "mp": 30,
     "str": 18,
-    "int": 7,
     "def": 10,
-    "res": 6,
     "spd": 12,
-    "luck": 10,
-    "race": 2,
-    "class": 5,
-    "rarity": 3
+    "luck": 10
   },
   {
     "id": 4,
     "name": "Impa",
     "hp": 130,
-    "mp": 60,
     "str": 14,
-    "int": 10,
     "def": 12,
-    "res": 8,
     "spd": 9,
-    "luck": 10,
-    "race": 2,
-    "class": 6,
-    "rarity": 4
+    "luck": 10
   },
   {
     "id": 5,
     "name": "Hylia",
     "hp": 150,
-    "mp": 300,
     "str": 20,
-    "int": 18,
     "def": 8,
-    "res": 8,
     "spd": 4,
-    "luck": 10,
-    "race": 14,
-    "class": 3,
-    "rarity": 5
+    "luck": 10
   }
 ]
